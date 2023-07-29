@@ -1,7 +1,6 @@
 require("dotenv").config();
 const express = require('express');
 const app = express();
-const bodyParser = require("body-parser");
 const mongoose = require('mongoose');
 const cors = require("cors");
 
@@ -18,39 +17,36 @@ mongoose.connect(DatabaseUrl, {
 });
 
 mongoose.connection.on('connected', () => {
-  console.log('Connected to MongoDB');
+  console.log('Connected to database');
 });
 
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-// app.use(bodyParser.json());
 
 app.use(cors());
 
 
+app.post('/signup', async (req, res) => {
+  const { name, email, password, phoneNumber, age = "20", gender = "male" } = req.body;
+  try {
+    const user = new User({ name, email, password, phoneNumber, age, gender });
+    await user.save();
+    res.status(200).json({
+      success: true,
+      message: "Registration successful!",
+      user
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      error: "Something went wrong."
+    });
+  }
+})
 
-// app.post('http://localhost:5000/signup', (req, res) => {
 
-app.post('/signup', (req, res) => {
-  // const infos = req.body;
 
-  // Validate request data against the schema
-  // const newUser = new User(infos);
-
-  const { name, email, password, phoneNumber, gender } = req.body;
-
-  const newUser = new User({ name, email, password, phoneNumber, gender });
-
-  newUser.save((err, savedUser) => {
-    if (err) {
-      console.error('Error saving user:', err);
-      return res.status(400).json({ error: 'Invalid data' });
-    }
-    console.log('User saved successfully:', savedUser);
-    return res.status(201).json(savedUser);
-  });
-});
 
 
 const PORT = process.env.PORT || 5000;
@@ -58,6 +54,3 @@ const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
 });
-
-
-
