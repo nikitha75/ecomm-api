@@ -8,7 +8,6 @@ const cors = require("cors");
 const MONGODB_URL = process.env.MONGODB_URL;
 
 
-
 const User = require('./schemas/schema.js');
 
 mongoose.connect(MONGODB_URL, {
@@ -44,8 +43,6 @@ app.post('/signup', async (req, res) => {
     });
   }
 })
-
-
 
 
 
