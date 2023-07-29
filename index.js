@@ -5,13 +5,13 @@ const mongoose = require('mongoose');
 const cors = require("cors");
 
 
-const DatabaseUrl = 'mongodb+srv://adityashivhare7291:9981142668@cluster0.nf2t6aw.mongodb.net/sringar';
+const MONGODB_URL = process.env.MONGODB_URL;
 
 
 
 const User = require('./schemas/schema.js');
 
-mongoose.connect(DatabaseUrl, {
+mongoose.connect(MONGODB_URL, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
