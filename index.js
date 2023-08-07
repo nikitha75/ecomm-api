@@ -42,8 +42,24 @@ app.post('/signup', async (req, res) => {
       error: "Something went wrong."
     });
   }
-})
+});
+app.post('/login',async(req,res)=>{
+  try{
+  const { emails, password } = req.body;
+  alert("you reached");
+  const resy= await User.findOne({ email:{emails} });
+  res.status(200).json({
+    success: true,
+    message: "Registration successful!",
+  });
+} catch (error) {
+  res.status(500).json({
+    success: false,
+    error: "Something went wrong."
+  });
+}
 
+});
 
 
 const PORT = process.env.PORT || 5000;
